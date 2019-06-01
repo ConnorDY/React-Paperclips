@@ -5,8 +5,9 @@ import roundTo from 'round-to';
 import Business from './Business';
 import Marketing from './Marketing';
 import Manufacturing from './Manufacturing';
+import Computation from './Computation';
 
-const startClips = 0;
+const startClips = 1000;
 const speedFactor = 1 / 5;
 
 const App = () => {
@@ -34,6 +35,17 @@ const App = () => {
 
   const [clippers, setClippers] = useState(0);
   const [clipperPrice, setClipperPrice] = useState(5);
+
+  const [trust, setTrust] = useState(2);
+  const [trustMilestone, setTrustMilestone] = useState(3000);
+  const [fib1, setFib1] = useState(2);
+  const [fib2, setFib2] = useState(3);
+
+  const [processors, setProcessors] = useState(1);
+  const [memory, setMemory] = useState(1);
+  const [ops, setOps] = useState(0);
+  const [maxOps, setMaxOps] = useState(1000);
+  const [creativity, setCreativty] = useState(0);
 
   // make single clip
   const makeOneClip = () => {
@@ -67,18 +79,21 @@ const App = () => {
     setClipPrice(roundTo(clipPrice - 0.01, 2));
   };
 
-  // market demand calculation
-  const calcDemand = () => {
-    setDemand(
-      roundTo((0.8 / clipPrice) * 1.1 ** (marketing - 1) * demandFactor, 2)
-    );
-  };
-
   // increase marketing level
   const increaseMarketing = () => {
     setMarketing(marketing + 1);
     setMarketingPrice(marketingPrice * 2);
     setCash(cash - marketingPrice);
+  };
+
+  // increase processors
+  const increaseProcessors = () => {
+    setProcessors(processors + 1);
+  };
+
+  // increase memory
+  const increaseMemory = () => {
+    setMemory(memory + 1);
   };
 
   // buy wire
@@ -92,6 +107,13 @@ const App = () => {
     setClippers(clippers + 1);
     setCash(cash - clipperPrice);
     setClipperPrice(1.1 ** (clippers + 1) + 5);
+  };
+
+  // calculate market demand
+  const calcDemand = () => {
+    setDemand(
+      roundTo((0.8 / clipPrice) * 1.1 ** (marketing - 1) * demandFactor, 2)
+    );
   };
 
   // tick every second
@@ -142,6 +164,15 @@ const App = () => {
       setWireCounter(wireCounter + 0.25);
       setWirePrice(Math.ceil(20 + 6 * Math.sin(wireCounter + 0.25)));
     }
+
+    // calculate trust (using the fibonacci sequence)
+    if (totalClips >= trustMilestone) {
+      setTrust(trust + 1);
+      const fibNext = fib1 + fib2;
+      setTrustMilestone(fibNext * 1000);
+      setFib1(fib2);
+      setFib2(fibNext);
+    }
   }, 1000 * speedFactor);
 
   // re-calculate the demand whenever the price or market demand factor changes
@@ -182,6 +213,25 @@ const App = () => {
         buyClipper={buyClipper}
         clipperPrice={clipperPrice}
       />
+      {totalClips >= 2000 ? (
+        <>
+          <br />
+          <br />
+          <Computation
+            trust={trust}
+            trustMilestone={trustMilestone}
+            processors={processors}
+            memory={memory}
+            ops={ops}
+            maxOps={maxOps}
+            creativity={creativity}
+            increaseProcessors={increaseProcessors}
+            increaseMemory={increaseMemory}
+          />
+        </>
+      ) : (
+        ''
+      )}
     </>
   );
 };
