@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import useInterval from '@use-it/interval';
 import roundTo from 'round-to';
 
+const startClips = 1000;
+
 const numberWithCommas = x => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
@@ -9,9 +11,11 @@ const numberWithCommas = x => {
 const App = () => {
   // init state
   const [cash, setCash] = useState(0);
-  const [clips, setClips] = useState(0);
-  const [totalClips, setTotalClips] = useState(0);
-  const [clipPrice, setClipPrice] = useState(0.1);
+  const [cashPerSecond, setCashPerSecond] = useState(0);
+  const [profitList, setProfitList] = useState([0]);
+  const [clips, setClips] = useState(startClips);
+  const [totalClips, setTotalClips] = useState(startClips);
+  const [clipPrice, setClipPrice] = useState(0.25);
   const [demand, setDemand] = useState(1);
   const [demandFactor, setDemandFactor] = useState(1);
 
@@ -22,9 +26,14 @@ const App = () => {
   };
 
   // sell a clip
-  const sellClip = () => {
-    setClips(clips - 1);
-    setCash(cash + clipPrice);
+  const sellClips = num => {
+    if (num > clips) num = clips;
+    setClips(clips - num);
+
+    const profit = clipPrice * num;
+    setCash(cash + profit);
+
+    return profit;
   };
 
   // increase or decrease the price of a clip
@@ -37,19 +46,25 @@ const App = () => {
     setClipPrice(roundTo(clipPrice - 0.01, 2));
   };
 
-  // market demand calculations
+  // market demand calculation
   const calcDemand = () => {
-    setDemand(roundTo((0.1 / clipPrice) * demandFactor, 2));
-  };
-
-  const demandToMS = () => {
-    return (1 / demand) * 1000;
+    setDemand(roundTo((0.8 / clipPrice) * 1.1 ** 0 * demandFactor, 2));
   };
 
   // sell clips at a rate according to the market demand
   useInterval(() => {
-    if (clips > 0) sellClip();
-  }, demandToMS());
+    let profit = 0;
+    if (clips > 0) profit = sellClips(Math.floor(0.7 * demand ** 1.15));
+
+    // average cash per second
+    const profits = [...profitList];
+
+    if (profits.unshift(profit) > 5) profits.pop();
+    setProfitList(profits);
+
+    const total = profits.reduce((tot, v) => tot + v, 0);
+    setCashPerSecond(total / profits.length);
+  }, 1000);
 
   // re-calculate the demand whenever the price or market demand factor changes
   useEffect(calcDemand, [clipPrice, demandFactor]);
@@ -62,13 +77,13 @@ const App = () => {
       <br />
       Unused Clips: {numberWithCommas(clips)}
       <br />
-      Cash: ${cash.toFixed(2)}
+      Cash: ${cash.toFixed(2)} (${cashPerSecond.toFixed(2)}/s)
       <br />
       Clip Price: ${clipPrice.toFixed(2)}
       &nbsp;<button onClick={decreasePrice}>&darr;</button>
       &nbsp;<button onClick={increasePrice}>&uarr;</button>
       <br />
-      Demand: {(demand * 100).toFixed(0)}% ({demandToMS().toFixed(0)} ms)
+      Demand: {(demand * 10).toFixed(0)}%
       <br />
       <br />
       <button onClick={makeClip}>Make Clip</button>
