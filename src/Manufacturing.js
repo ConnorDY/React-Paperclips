@@ -3,12 +3,21 @@ import React from 'react';
 import { numberWithCommas } from './misc';
 
 const Manufacturing = props => {
-  const { wire, wirePrice, cash, clipsPerSecond, buyWire } = props;
+  const {
+    wire,
+    wirePrice,
+    cash,
+    clipsPerSecond,
+    buyWire,
+    clippers,
+    buyClipper,
+    clipperPrice
+  } = props;
 
   return (
     <>
       <h3>Manufacturing</h3>
-      Clips per Second: {clipsPerSecond}
+      Clips per Second: {numberWithCommas(clipsPerSecond)}
       <br />
       <br />
       Wire: {numberWithCommas(wire)}
@@ -16,7 +25,18 @@ const Manufacturing = props => {
       <button onClick={buyWire} disabled={cash < wirePrice ? true : false}>
         Buy Wire
       </button>
-      &nbsp; Cost: ${wirePrice}
+      &nbsp; Cost: ${wirePrice.toFixed(2)}
+      <br />
+      <br />
+      AutoClippers: {numberWithCommas(clippers)}
+      <br />
+      <button
+        onClick={buyClipper}
+        disabled={cash < clipperPrice ? true : false}
+      >
+        Buy AutoClipper
+      </button>
+      &nbsp; Cost: ${clipperPrice.toFixed(2)}
     </>
   );
 };

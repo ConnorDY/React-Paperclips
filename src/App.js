@@ -30,13 +30,19 @@ const App = () => {
   const [wirePerSpool, setWirePerSpool] = useState(1000);
   const [wireCounter, setWireCounter] = useState(0);
 
+  const [clippers, setClippers] = useState(0);
+  const [clipperPrice, setClipperPrice] = useState(5);
+
   // make a clips
   const makeClips = num => {
     if (num > wire) num = wire;
+
     setClips(clips + num);
     setTotalClips(totalClips + num);
     setClipsThisSecond(clipsThisSecond + num);
     setWire(wire - num);
+
+    return num;
   };
 
   // sell clips
@@ -70,12 +76,20 @@ const App = () => {
   // increase marketing level
   const increaseMarketing = () => {
     setMarketing(marketing + 1);
+    setMarketingPrice(marketingPrice * 2);
   };
 
   // buy wire
   const buyWire = () => {
     setWire(wire + wirePerSpool);
     setCash(cash - wirePrice);
+  };
+
+  // buy auto clipper
+  const buyClipper = () => {
+    setClippers(clippers + 1);
+    setCash(cash - clipperPrice);
+    setClipperPrice(1.1 ** (clippers + 1) + 5);
   };
 
   // tick every second
@@ -93,15 +107,21 @@ const App = () => {
     const total = profits.reduce((tot, v) => tot + v, 0);
     setCashPerSecond(total / profits.length);
 
-    // clips per second
-    setClipsPerSecond(clipsThisSecond);
-    setClipsThisSecond(0);
+    // auto clippers
+    let autoClips = 0;
+    if (clippers > 0) {
+      autoClips = makeClips(clippers);
+    }
 
     // wire price
     if (Math.random() < 0.35) {
       setWireCounter(wireCounter + 0.25);
       setWirePrice(Math.ceil(20 + 6 * Math.sin(wireCounter + 0.25)));
     }
+
+    // clips per second
+    setClipsPerSecond(clipsThisSecond + autoClips);
+    setClipsThisSecond(0);
   }, 1000);
 
   // re-calculate the demand whenever the price or market demand factor changes
@@ -138,6 +158,9 @@ const App = () => {
         cash={cash}
         clipsPerSecond={clipsPerSecond}
         buyWire={buyWire}
+        clippers={clippers}
+        buyClipper={buyClipper}
+        clipperPrice={clipperPrice}
       />
     </>
   );
