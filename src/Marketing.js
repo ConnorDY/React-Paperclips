@@ -13,7 +13,7 @@ const Marketing = props => {
       >
         Increase Marketing Level
       </button>
-      &nbsp; Cost: ${marketingPrice}
+      &nbsp; Cost: ${marketingPrice.toFixed(2)}
     </>
   );
 };
