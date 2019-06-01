@@ -11,8 +11,8 @@ import Projects from './Projects';
 const speedFactor = 1 / 5;
 
 // adjust for debugging
-const startClips = 2500;
-const startCash = 2000;
+const startClips = 0;
+const startCash = 0;
 
 const App = () => {
   // init state
