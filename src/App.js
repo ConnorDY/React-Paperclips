@@ -41,11 +41,7 @@ const App = () => {
   // make clips
   const makeClips = (num, _clips) => {
     if (num > wire) num = wire;
-
-    _clips += num;
-    setWire(wire - num);
-
-    return [num, _clips];
+    return num;
   };
 
   // sell clips
@@ -56,7 +52,7 @@ const App = () => {
     const profit = clipPrice * num;
     setCash(cash + profit);
 
-    return [profit, _clips];
+    return [num, profit];
   };
 
   // increase or decrease the price of a clip
@@ -98,21 +94,25 @@ const App = () => {
   // tick every second
   useInterval(() => {
     // temp clip count
-    let _clips = clips + manualClips;
+    const _clips = clips + manualClips;
 
     // auto clippers
     let autoClips = 0;
     if (clippers > 0) {
-      [autoClips, _clips] = makeClips(clippers, _clips);
+      autoClips = makeClips(clippers, _clips);
     }
+
+    // update wire amount
+    setWire(wire - autoClips - manualClips);
 
     // sell clips at a rate according to the market demand
     let profit = 0;
+    let sold = 0;
     if (_clips > 0)
-      [profit, _clips] = sellClips(Math.floor(0.7 * demand ** 1.15), _clips);
+      [sold, profit] = sellClips(Math.floor(0.7 * demand ** 1.15), _clips);
 
     // update unsold and total clips
-    setClips(_clips);
+    setClips(_clips + autoClips - sold);
     setTotalClips(totalClips + autoClips + manualClips);
 
     // average cash per second
@@ -150,7 +150,7 @@ const App = () => {
         increasePrice={increasePrice}
         decreasePrice={decreasePrice}
         demand={demand}
-        wire={wire}
+        wire={wire - manualClips}
         makeOneClip={makeOneClip}
       />
       <br />
@@ -164,7 +164,7 @@ const App = () => {
       <br />
       <br />
       <Manufacturing
-        wire={wire}
+        wire={wire - manualClips}
         wirePrice={wirePrice}
         cash={cash}
         clipsPerSecond={clipsPerSecond}
