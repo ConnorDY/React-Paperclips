@@ -78,6 +78,7 @@ const App = () => {
   const increaseMarketing = () => {
     setMarketing(marketing + 1);
     setMarketingPrice(marketingPrice * 2);
+    setCash(cash - marketingPrice);
   };
 
   // buy wire
