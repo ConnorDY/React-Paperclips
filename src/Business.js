@@ -22,7 +22,7 @@ const Business = props => {
       {numberWithCommas(totalClips)}
       <br />
       <br />
-      <button onClick={makeOneClip} disabled={wire <= 0 ? true : false}>
+      <button onClick={makeOneClip} disabled={wire <= 0}>
         Make Paperclip
       </button>
       <br />

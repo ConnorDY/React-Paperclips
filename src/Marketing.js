@@ -7,10 +7,7 @@ const Marketing = props => {
     <>
       Marketing Level {marketing}
       <br />
-      <button
-        onClick={increaseMarketing}
-        disabled={cash < marketingPrice ? true : false}
-      >
+      <button onClick={increaseMarketing} disabled={cash < marketingPrice}>
         Increase Marketing Level
       </button>
       &nbsp; Cost: ${marketingPrice.toFixed(2)}

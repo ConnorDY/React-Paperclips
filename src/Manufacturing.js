@@ -22,7 +22,7 @@ const Manufacturing = props => {
       <br />
       Wire: {numberWithCommas(wire)}
       <br />
-      <button onClick={buyWire} disabled={cash < wirePrice ? true : false}>
+      <button onClick={buyWire} disabled={cash < wirePrice}>
         Buy Wire
       </button>
       &nbsp; Cost: ${wirePrice.toFixed(2)}
@@ -30,10 +30,7 @@ const Manufacturing = props => {
       <br />
       AutoClippers: {numberWithCommas(clippers)}
       <br />
-      <button
-        onClick={buyClipper}
-        disabled={cash < clipperPrice ? true : false}
-      >
+      <button onClick={buyClipper} disabled={cash < clipperPrice}>
         Buy AutoClipper
       </button>
       &nbsp; Cost: ${clipperPrice.toFixed(2)}
