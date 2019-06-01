@@ -7,30 +7,27 @@ const numberWithCommas = x => {
 };
 
 const App = () => {
+  // init state
   const [cash, setCash] = useState(0);
   const [clips, setClips] = useState(0);
   const [totalClips, setTotalClips] = useState(0);
   const [clipPrice, setClipPrice] = useState(0.1);
   const [demand, setDemand] = useState(1);
+  const [demandFactor, setDemandFactor] = useState(1);
 
+  // make a clip
   const makeClip = () => {
     setClips(clips + 1);
     setTotalClips(totalClips + 1);
   };
 
+  // sell a clip
   const sellClip = () => {
     setClips(clips - 1);
     setCash(cash + clipPrice);
   };
 
-  const calcDemand = () => {
-    setDemand(roundTo(0.1 / clipPrice, 2));
-  };
-
-  const demandToMS = () => {
-    return (1 / demand) * 1000;
-  };
-
+  // increase or decrease the price of a clip
   const increasePrice = () => {
     setClipPrice(roundTo(clipPrice + 0.01, 2));
   };
@@ -40,12 +37,24 @@ const App = () => {
     setClipPrice(roundTo(clipPrice - 0.01, 2));
   };
 
+  // market demand calculations
+  const calcDemand = () => {
+    setDemand(roundTo((0.1 / clipPrice) * demandFactor, 2));
+  };
+
+  const demandToMS = () => {
+    return (1 / demand) * 1000;
+  };
+
+  // sell clips at a rate according to the market demand
   useInterval(() => {
     if (clips > 0) sellClip();
   }, demandToMS());
 
-  useEffect(calcDemand, [clipPrice]);
+  // re-calculate the demand whenever the price or market demand factor changes
+  useEffect(calcDemand, [clipPrice, demandFactor]);
 
+  // render
   return (
     <>
       Total Clips: {numberWithCommas(totalClips)}
@@ -63,6 +72,15 @@ const App = () => {
       <br />
       <br />
       <button onClick={makeClip}>Make Clip</button>
+      <br />
+      <br />
+      <button
+        onClick={() => {
+          setDemandFactor(roundTo(demandFactor + 0.25, 2));
+        }}
+      >
+        Increase Market Demand
+      </button>
     </>
   );
 };
