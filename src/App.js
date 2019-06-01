@@ -8,12 +8,15 @@ import Manufacturing from './Manufacturing';
 import Computation from './Computation';
 import Projects from './Projects';
 
-const startClips = 2500; // adjust for debugging
 const speedFactor = 1 / 5;
+
+// adjust for debugging
+const startClips = 2500;
+const startCash = 2000;
 
 const App = () => {
   // init state
-  const [cash, setCash] = useState(0);
+  const [cash, setCash] = useState(startCash);
   const [cashPerSecond, setCashPerSecond] = useState(0);
   const [profitList, setProfitList] = useState([0]);
 
@@ -46,6 +49,78 @@ const App = () => {
   const [memory, setMemory] = useState(1);
   const [ops, setOps] = useState(0);
   const [creativity, setCreativty] = useState(0);
+
+  // save/load state
+  const saveState = () => {
+    const state = JSON.stringify({
+      cash,
+
+      clips,
+      totalClips,
+      clipPrice,
+
+      demandFactor,
+      marketing,
+      marketingPrice,
+
+      wire,
+      wirePrice,
+      wirePerSpool,
+      wireCounter,
+
+      clippers,
+      clipperPrice,
+
+      trust,
+      trustMilestone,
+      fib1,
+      fib2,
+
+      processors,
+      memory,
+      ops,
+      creativity
+    });
+
+    localStorage.setItem('gameState', state);
+
+    console.log('Saved');
+  };
+
+  const loadState = () => {
+    const lcs = localStorage.getItem('gameState');
+    if (!lcs) return;
+
+    const state = JSON.parse(lcs);
+
+    setCash(state.cash);
+
+    setClips(state.clips);
+    setTotalClips(state.totalClips);
+    setClipPrice(state.clipPrice);
+
+    setDemandFactor(state.demandFactor);
+    setMarketing(state.marketing);
+    setMarketingPrice(state.marketingPrice);
+
+    setWire(state.wire);
+    setWirePrice(state.wirePrice);
+    setWirePerSpool(state.wirePerSpool);
+    setWireCounter(state.wireCounter);
+
+    setClippers(state.clippers);
+    setClipperPrice(state.clipperPrice);
+
+    setTrust(state.trust);
+    setTrustMilestone(state.trustMilestone);
+    setFib1(state.fib1);
+    setFib2(state.fib2);
+
+    setProcessors(state.processors);
+    setMemory(state.memory);
+    setOps(state.ops);
+    setCreativty(state.creativity);
+  };
 
   // make single clip
   const makeOneClip = () => {
@@ -185,11 +260,17 @@ const App = () => {
       if (opCycle > opBuf) opCycle = opBuf;
 
       setOps(ops + opCycle);
-    } else setCreativty(creativity + processors / 10 / speedFactor);
+    } else setCreativty(creativity + processors / 20 / speedFactor);
   }, 1000 * speedFactor);
+
+  // save every 5 seconds
+  useInterval(saveState, 5000);
 
   // re-calculate the demand whenever the price or market demand factor changes
   useEffect(calcDemand, [clipPrice, demandFactor, marketing]);
+
+  // load state on launch
+  useEffect(loadState, []);
 
   // render
   return (
@@ -251,7 +332,7 @@ const App = () => {
               clipperPrice={clipperPrice}
             />
           </td>
-          {/* Row 2, Col 1 */}
+          {/* Row 2, Col 2 */}
           <td>
             <Projects />
           </td>
