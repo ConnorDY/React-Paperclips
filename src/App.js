@@ -2,27 +2,41 @@ import React, { useState, useEffect } from 'react';
 import useInterval from '@use-it/interval';
 import roundTo from 'round-to';
 
-const startClips = 1000;
+import Business from './Business';
+import Marketing from './Marketing';
+import Manufacturing from './Manufacturing';
 
-const numberWithCommas = x => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-};
+const startClips = 0;
 
 const App = () => {
   // init state
   const [cash, setCash] = useState(0);
   const [cashPerSecond, setCashPerSecond] = useState(0);
   const [profitList, setProfitList] = useState([0]);
+
   const [clips, setClips] = useState(startClips);
   const [totalClips, setTotalClips] = useState(startClips);
   const [clipPrice, setClipPrice] = useState(0.25);
+  const [clipsPerSecond, setClipsPerSecond] = useState(0);
+  const [clipsThisSecond, setClipsThisSecond] = useState(0);
+
   const [demand, setDemand] = useState(1);
   const [demandFactor, setDemandFactor] = useState(1);
+  const [marketing, setMarketing] = useState(1);
+  const [marketingPrice, setMarketingPrice] = useState(100);
 
-  // make a clip
-  const makeClip = () => {
-    setClips(clips + 1);
-    setTotalClips(totalClips + 1);
+  const [wire, setWire] = useState(1000);
+  const [wirePrice, setWirePrice] = useState(20);
+  const [wirePerSpool, setWirePerSpool] = useState(1000);
+  const [wireCounter, setWireCounter] = useState(0);
+
+  // make a clips
+  const makeClips = num => {
+    if (num > wire) num = wire;
+    setClips(clips + num);
+    setTotalClips(totalClips + num);
+    setClipsThisSecond(clipsThisSecond + num);
+    setWire(wire - num);
   };
 
   // sell clips
@@ -48,11 +62,25 @@ const App = () => {
 
   // market demand calculation
   const calcDemand = () => {
-    setDemand(roundTo((0.8 / clipPrice) * 1.1 ** 0 * demandFactor, 2));
+    setDemand(
+      roundTo((0.8 / clipPrice) * 1.1 ** (marketing - 1) * demandFactor, 2)
+    );
   };
 
-  // sell clips at a rate according to the market demand
+  // increase marketing level
+  const increaseMarketing = () => {
+    setMarketing(marketing + 1);
+  };
+
+  // buy wire
+  const buyWire = () => {
+    setWire(wire + wirePerSpool);
+    setCash(cash - wirePrice);
+  };
+
+  // tick every second
   useInterval(() => {
+    // sell clips at a rate according to the market demand
     let profit = 0;
     if (clips > 0) profit = sellClips(Math.floor(0.7 * demand ** 1.15));
 
@@ -64,38 +92,53 @@ const App = () => {
 
     const total = profits.reduce((tot, v) => tot + v, 0);
     setCashPerSecond(total / profits.length);
+
+    // clips per second
+    setClipsPerSecond(clipsThisSecond);
+    setClipsThisSecond(0);
+
+    // wire price
+    if (Math.random() < 0.015) {
+      setWireCounter(wireCounter + 1);
+      setWirePrice(Math.ceil(20 + 6 * Math.sin(wireCounter + 1)));
+    }
   }, 1000);
 
   // re-calculate the demand whenever the price or market demand factor changes
-  useEffect(calcDemand, [clipPrice, demandFactor]);
+  useEffect(calcDemand, [clipPrice, demandFactor, marketing]);
 
   // render
   return (
     <>
-      Total Clips: {numberWithCommas(totalClips)}
+      <Business
+        totalClips={totalClips}
+        clips={clips}
+        cash={cash}
+        cashPerSecond={cashPerSecond}
+        clipPrice={clipPrice}
+        increasePrice={increasePrice}
+        decreasePrice={decreasePrice}
+        demand={demand}
+        makeClips={makeClips}
+        wire={wire}
+      />
       <br />
       <br />
-      Unused Clips: {numberWithCommas(clips)}
-      <br />
-      Cash: ${cash.toFixed(2)} (${cashPerSecond.toFixed(2)}/s)
-      <br />
-      Clip Price: ${clipPrice.toFixed(2)}
-      &nbsp;<button onClick={decreasePrice}>&darr;</button>
-      &nbsp;<button onClick={increasePrice}>&uarr;</button>
-      <br />
-      Demand: {(demand * 10).toFixed(0)}%
+      <Marketing
+        marketing={marketing}
+        increaseMarketing={increaseMarketing}
+        marketingPrice={marketingPrice}
+        cash={cash}
+      />
       <br />
       <br />
-      <button onClick={makeClip}>Make Clip</button>
-      <br />
-      <br />
-      <button
-        onClick={() => {
-          setDemandFactor(roundTo(demandFactor + 0.25, 2));
-        }}
-      >
-        Increase Market Demand
-      </button>
+      <Manufacturing
+        wire={wire}
+        wirePrice={wirePrice}
+        cash={cash}
+        clipsPerSecond={clipsPerSecond}
+        buyWire={buyWire}
+      />
     </>
   );
 };
