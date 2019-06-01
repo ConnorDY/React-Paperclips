@@ -334,7 +334,7 @@ const App = () => {
           </td>
           {/* Row 2, Col 2 */}
           <td>
-            <Projects />
+            <Projects ops={ops} creativity={creativity} cash={cash} />
           </td>
         </tr>
       </tbody>
