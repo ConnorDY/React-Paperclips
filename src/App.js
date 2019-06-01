@@ -25,7 +25,7 @@ const App = () => {
     setTotalClips(totalClips + 1);
   };
 
-  // sell a clip
+  // sell clips
   const sellClips = num => {
     if (num > clips) num = clips;
     setClips(clips - num);
