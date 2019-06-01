@@ -9,7 +9,6 @@ const Computation = props => {
     processors,
     memory,
     ops,
-    maxOps,
     creativity,
     increaseProcessors,
     increaseMemory
@@ -38,7 +37,7 @@ const Computation = props => {
       </button>
       <br />
       <br />
-      Operations: {numberWithCommas(ops)} / {numberWithCommas(maxOps)}
+      Operations: {numberWithCommas(ops)} / {numberWithCommas(memory * 1000)}
       <br />
       Creativity: {numberWithCommas(creativity)}
     </>

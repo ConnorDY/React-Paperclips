@@ -7,7 +7,7 @@ import Marketing from './Marketing';
 import Manufacturing from './Manufacturing';
 import Computation from './Computation';
 
-const startClips = 1000;
+const startClips = 2500; // adjust for debugging
 const speedFactor = 1 / 5;
 
 const App = () => {
@@ -44,7 +44,6 @@ const App = () => {
   const [processors, setProcessors] = useState(1);
   const [memory, setMemory] = useState(1);
   const [ops, setOps] = useState(0);
-  const [maxOps, setMaxOps] = useState(1000);
   const [creativity, setCreativty] = useState(0);
 
   // make single clip
@@ -226,7 +225,6 @@ const App = () => {
             processors={processors}
             memory={memory}
             ops={ops}
-            maxOps={maxOps}
             creativity={creativity}
             increaseProcessors={increaseProcessors}
             increaseMemory={increaseMemory}
