@@ -18,7 +18,7 @@ const App = () => {
   const [totalClips, setTotalClips] = useState(startClips);
   const [clipPrice, setClipPrice] = useState(0.25);
   const [clipsPerSecond, setClipsPerSecond] = useState(0);
-  const [clipsThisSecond, setClipsThisSecond] = useState(0);
+  const [manualClips, setManualClips] = useState(0);
 
   const [demand, setDemand] = useState(1);
   const [demandFactor, setDemandFactor] = useState(1);
@@ -33,27 +33,30 @@ const App = () => {
   const [clippers, setClippers] = useState(0);
   const [clipperPrice, setClipperPrice] = useState(5);
 
-  // make a clips
-  const makeClips = num => {
+  // make single clip
+  const makeOneClip = () => {
+    setManualClips(manualClips + 1);
+  };
+
+  // make clips
+  const makeClips = (num, _clips) => {
     if (num > wire) num = wire;
 
-    setClips(clips + num);
-    setTotalClips(totalClips + num);
-    setClipsThisSecond(clipsThisSecond + num);
+    _clips += num;
     setWire(wire - num);
 
-    return num;
+    return [num, _clips];
   };
 
   // sell clips
-  const sellClips = num => {
-    if (num > clips) num = clips;
-    setClips(clips - num);
+  const sellClips = (num, _clips) => {
+    if (num > _clips) num = _clips;
 
+    _clips -= num;
     const profit = clipPrice * num;
     setCash(cash + profit);
 
-    return profit;
+    return [profit, _clips];
   };
 
   // increase or decrease the price of a clip
@@ -94,9 +97,23 @@ const App = () => {
 
   // tick every second
   useInterval(() => {
+    // temp clip count
+    let _clips = clips + manualClips;
+
+    // auto clippers
+    let autoClips = 0;
+    if (clippers > 0) {
+      [autoClips, _clips] = makeClips(clippers, _clips);
+    }
+
     // sell clips at a rate according to the market demand
     let profit = 0;
-    if (clips > 0) profit = sellClips(Math.floor(0.7 * demand ** 1.15));
+    if (_clips > 0)
+      [profit, _clips] = sellClips(Math.floor(0.7 * demand ** 1.15), _clips);
+
+    // update unsold and total clips
+    setClips(_clips);
+    setTotalClips(totalClips + autoClips + manualClips);
 
     // average cash per second
     const profits = [...profitList];
@@ -107,12 +124,6 @@ const App = () => {
     const total = profits.reduce((tot, v) => tot + v, 0);
     setCashPerSecond(total / profits.length);
 
-    // auto clippers
-    let autoClips = 0;
-    if (clippers > 0) {
-      autoClips = makeClips(clippers);
-    }
-
     // wire price
     if (Math.random() < 0.35) {
       setWireCounter(wireCounter + 0.25);
@@ -120,8 +131,8 @@ const App = () => {
     }
 
     // clips per second
-    setClipsPerSecond(clipsThisSecond + autoClips);
-    setClipsThisSecond(0);
+    setClipsPerSecond(manualClips + autoClips);
+    setManualClips(0);
   }, 1000);
 
   // re-calculate the demand whenever the price or market demand factor changes
@@ -131,16 +142,16 @@ const App = () => {
   return (
     <>
       <Business
-        totalClips={totalClips}
-        clips={clips}
+        totalClips={totalClips + manualClips}
+        clips={clips + manualClips}
         cash={cash}
         cashPerSecond={cashPerSecond}
         clipPrice={clipPrice}
         increasePrice={increasePrice}
         decreasePrice={decreasePrice}
         demand={demand}
-        makeClips={makeClips}
         wire={wire}
+        makeOneClip={makeOneClip}
       />
       <br />
       <br />

@@ -12,8 +12,8 @@ const Business = props => {
     increasePrice,
     decreasePrice,
     demand,
-    makeClips,
-    wire
+    wire,
+    makeOneClip
   } = props;
 
   return (
@@ -22,12 +22,7 @@ const Business = props => {
       {numberWithCommas(totalClips)}
       <br />
       <br />
-      <button
-        onClick={() => {
-          makeClips(1);
-        }}
-        disabled={wire <= 0 ? true : false}
-      >
+      <button onClick={makeOneClip} disabled={wire <= 0 ? true : false}>
         Make Paperclip
       </button>
       <br />
