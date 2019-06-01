@@ -27,13 +27,13 @@ const Computation = props => {
       <br />
       Processors: {processors}
       &nbsp;{' '}
-      <button onClick={increaseProcessors} disabled={usedTrust < trust}>
+      <button onClick={increaseProcessors} disabled={usedTrust >= trust}>
         +1
       </button>
       <br />
       Memory: {memory}
       &nbsp;{' '}
-      <button onClick={increaseMemory} disabled={usedTrust < trust}>
+      <button onClick={increaseMemory} disabled={usedTrust >= trust}>
         +1
       </button>
       <br />
