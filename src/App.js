@@ -124,7 +124,7 @@ const App = () => {
     // create clips with auto-clippers
     let autoClips = 0;
     if (clippers > 0) {
-      autoClips = makeClips(clippers * speedFactor, _clips);
+      autoClips = makeClips(roundTo(clippers * speedFactor, 3), _clips);
     }
 
     // update wire amount
@@ -134,7 +134,10 @@ const App = () => {
     let profit = 0;
     let sold = 0;
     if (_clips > 0)
-      [sold, profit] = sellClips(0.7 * demand ** 1.15 * speedFactor, _clips);
+      [sold, profit] = sellClips(
+        roundTo(0.7 * demand ** 1.15 * speedFactor, 3),
+        _clips
+      );
 
     // update unsold and total clips
     setClips(_clips + autoClips - sold);
