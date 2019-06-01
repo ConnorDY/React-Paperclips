@@ -98,9 +98,9 @@ const App = () => {
     setClipsThisSecond(0);
 
     // wire price
-    if (Math.random() < 0.015) {
-      setWireCounter(wireCounter + 1);
-      setWirePrice(Math.ceil(20 + 6 * Math.sin(wireCounter + 1)));
+    if (Math.random() < 0.35) {
+      setWireCounter(wireCounter + 0.25);
+      setWirePrice(Math.ceil(20 + 6 * Math.sin(wireCounter + 0.25)));
     }
   }, 1000);
 
