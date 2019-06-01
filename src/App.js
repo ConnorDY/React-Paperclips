@@ -6,6 +6,7 @@ import Business from './Business';
 import Marketing from './Marketing';
 import Manufacturing from './Manufacturing';
 import Computation from './Computation';
+import Projects from './Projects';
 
 const startClips = 2500; // adjust for debugging
 const speedFactor = 1 / 5;
@@ -175,6 +176,16 @@ const App = () => {
       setFib1(fib2);
       setFib2(fibNext);
     }
+
+    // calculate operations
+    if (ops < memory * 1000) {
+      let opCycle = processors / speedFactor;
+      const opBuf = memory * 1000 - ops;
+
+      if (opCycle > opBuf) opCycle = opBuf;
+
+      setOps(ops + opCycle);
+    } else setCreativty(creativity + processors / 10 / speedFactor);
   }, 1000 * speedFactor);
 
   // re-calculate the demand whenever the price or market demand factor changes
@@ -182,58 +193,71 @@ const App = () => {
 
   // render
   return (
-    <>
-      <Business
-        totalClips={Math.floor(totalClips) + manualClips}
-        clips={Math.floor(clips) + manualClips}
-        cash={cash}
-        cashPerSecond={cashPerSecond}
-        clipPrice={clipPrice}
-        increasePrice={increasePrice}
-        decreasePrice={decreasePrice}
-        demand={demand}
-        wire={wire - manualClips}
-        makeOneClip={makeOneClip}
-      />
-      <br />
-      <br />
-      <Marketing
-        marketing={marketing}
-        increaseMarketing={increaseMarketing}
-        marketingPrice={marketingPrice}
-        cash={cash}
-      />
-      <br />
-      <br />
-      <Manufacturing
-        wire={Math.floor(wire) - manualClips}
-        wirePrice={wirePrice}
-        cash={cash}
-        clipsPerSecond={clipsPerSecond}
-        buyWire={buyWire}
-        clippers={clippers}
-        buyClipper={buyClipper}
-        clipperPrice={clipperPrice}
-      />
-      {totalClips >= 2000 ? (
-        <>
-          <br />
-          <br />
-          <Computation
-            trust={trust}
-            trustMilestone={trustMilestone}
-            processors={processors}
-            memory={memory}
-            ops={ops}
-            creativity={creativity}
-            increaseProcessors={increaseProcessors}
-            increaseMemory={increaseMemory}
-          />
-        </>
-      ) : (
-        ''
-      )}
-    </>
+    <table>
+      <tbody>
+        <tr>
+          {/* Row 1, Col 1 */}
+          <td>
+            <Business
+              totalClips={Math.floor(totalClips) + manualClips}
+              clips={Math.floor(clips) + manualClips}
+              cash={cash}
+              cashPerSecond={cashPerSecond}
+              clipPrice={clipPrice}
+              increasePrice={increasePrice}
+              decreasePrice={decreasePrice}
+              demand={demand}
+              wire={wire - manualClips}
+              makeOneClip={makeOneClip}
+            />
+          </td>
+          {/* Row 1, Col 2 */}
+          <td>
+            {totalClips >= 2000 ? (
+              <Computation
+                trust={trust}
+                trustMilestone={trustMilestone}
+                processors={processors}
+                memory={memory}
+                ops={Math.floor(ops)}
+                creativity={Math.floor(creativity)}
+                increaseProcessors={increaseProcessors}
+                increaseMemory={increaseMemory}
+              />
+            ) : (
+              ''
+            )}
+          </td>
+        </tr>
+        <tr>
+          {/* Row 2, Col 1 */}
+          <td>
+            <Marketing
+              marketing={marketing}
+              increaseMarketing={increaseMarketing}
+              marketingPrice={marketingPrice}
+              cash={cash}
+            />
+            <br />
+            <br />
+            <Manufacturing
+              wire={Math.floor(wire) - manualClips}
+              wirePrice={wirePrice}
+              cash={cash}
+              clipsPerSecond={clipsPerSecond}
+              buyWire={buyWire}
+              clippers={clippers}
+              buyClipper={buyClipper}
+              clipperPrice={clipperPrice}
+            />
+          </td>
+          {/* Row 2, Col 1 */}
+          <td>
+            <Projects />
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 };
 
