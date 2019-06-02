@@ -73,6 +73,21 @@ const allProjects = [
       state.setOps(state.ops - 3500);
       state.setWirePerSpool(Math.floor(state.wirePerSpool * 1.75));
     }
+  },
+  {
+    title: 'Microlattice Shapecasting',
+    priceTag: '(7,500 ops)',
+    desc: '100% more wire supply from every spool',
+    trigger: state => {
+      return state.wirePerSpool >= 2600;
+    },
+    cost: state => {
+      return state.ops >= 7500;
+    },
+    effect: state => {
+      state.setOps(state.ops - 7500);
+      state.setWirePerSpool(Math.floor(state.wirePerSpool * 2));
+    }
   }
 ];
 
