@@ -28,6 +28,36 @@ const allProjects = [
       state.setOps(state.ops - 2500);
       state.setClipperBoost(state.clipperBoost + 0.5);
     }
+  },
+  {
+    title: 'Improved Wire Extrusion',
+    priceTag: '(1,750 ops)',
+    desc: '50% more wire supply from every spool',
+    trigger: state => {
+      return true;
+    },
+    cost: state => {
+      return state.ops >= 1750;
+    },
+    effect: state => {
+      state.setOps(state.ops - 1750);
+      state.setWirePerSpool(Math.floor(state.wirePerSpool * 1.5));
+    }
+  },
+  {
+    title: 'Optimized AutoClippers',
+    priceTag: '(5,000 ops)',
+    desc: 'Increases AutoClipper performance by an additional 75%',
+    trigger: state => {
+      return state.clipperBoost >= 1.75;
+    },
+    cost: state => {
+      return state.ops >= 5000;
+    },
+    effect: state => {
+      state.setOps(state.ops - 5000);
+      state.setClipperBoost(state.clipperBoost + 0.75);
+    }
   }
 ];
 

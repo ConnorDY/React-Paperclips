@@ -372,6 +372,8 @@ const App = () => {
                 setTrust={trust}
                 clipperBoost={clipperBoost}
                 setClipperBoost={setClipperBoost}
+                wirePerSpool={wirePerSpool}
+                setWirePerSpool={setWirePerSpool}
               />
             ) : (
               ''
