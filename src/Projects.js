@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import useInterval from '@use-it/interval';
 
 import all from './allProjects';
 const allProjects = all.map((proj, i) => ({ ...proj, index: i }));
@@ -13,18 +14,27 @@ const Projects = props => {
   delete state.activeProjects;
   delete state.setActiveProjects;
 
-  useEffect(() => {
-    const a = allProjects.filter(
-      (proj, i) => !activeProjects.includes(i) && proj.trigger(state)
+  useInterval(() => {
+    // find projects that are not currently available or active and whose triggers are met
+    const add = allProjects.filter(
+      (proj, i) =>
+        !activeProjects.includes(i) &&
+        !available.includes(proj) &&
+        proj.trigger(state)
     );
-    setAvailable(a);
-  }, [state, activeProjects]);
+    // copy the current available projects list and add these new ones ^
+    const _available = [...available];
+    _available.push(...add);
+    setAvailable(_available);
+  }, 200);
 
   const showProjects = available.map(proj => (
     <React.Fragment key={`proj${proj.index}`}>
       <button
         onClick={() => {
           setActiveProjects([...activeProjects, proj.index]);
+          const _available = [...available].filter(p => p !== proj);
+          setAvailable(_available);
           proj.effect(state);
         }}
         disabled={!proj.cost(state)}
