@@ -16,6 +16,8 @@ const startCash = 0;
 
 const App = () => {
   // init state
+  const [playTime, setPlayTime] = useState(0);
+
   const [cash, setCash] = useState(startCash);
   const [cashPerSecond, setCashPerSecond] = useState(0);
   const [profitList, setProfitList] = useState([0]);
@@ -57,6 +59,7 @@ const App = () => {
   // save/load state
   const saveState = () => {
     const state = JSON.stringify({
+      playTime,
       cash,
 
       clips,
@@ -99,6 +102,7 @@ const App = () => {
 
     const state = JSON.parse(lcs);
 
+    setPlayTime(state.playTime || 0);
     setCash(state.cash);
 
     setClips(state.clips);
@@ -201,7 +205,7 @@ const App = () => {
     );
   };
 
-  // tick every second
+  // tick
   useInterval(() => {
     // current clips
     const _clips = clips + manualClips;
@@ -265,7 +269,7 @@ const App = () => {
       setFib2(fibNext);
     }
 
-    // opFlag?
+    // check/set opFlag
     if (!opFlag) {
       if (totalClips >= 2000) setOpFlag(true);
     }
@@ -278,6 +282,9 @@ const App = () => {
 
       setOps(ops + opCycle);
     } else setCreativty(creativity + processors / 20 / speedFactor);
+
+    // increase playTime
+    setPlayTime(playTime + speedFactor);
   }, 1000 * speedFactor);
 
   // save every 5 seconds
