@@ -134,6 +134,22 @@ const allProjects = [
       state.setCreativity(state.creativity - 25);
       state.setDemandFactor(state.demandFactor * 1.5);
     }
+  },
+  {
+    title: 'Catchy Jingle',
+    priceTag: '(45 creat, 4,500 ops)',
+    desc: 'Double marketing effectiveness',
+    trigger: state => {
+      return state.demandFactor >= 1.5;
+    },
+    cost: state => {
+      return state.ops >= 4500 && state.creativity >= 45;
+    },
+    effect: state => {
+      state.setOps(state.ops - 4500);
+      state.setCreativity(state.creativity - 45);
+      state.setDemandFactor(state.demandFactor * 2);
+    }
   }
 ];
 
