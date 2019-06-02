@@ -123,8 +123,8 @@ const allProjects = [
     title: 'New Slogan',
     priceTag: '(25 creat, 2,500 ops)',
     desc: 'Improve marketing effectiveness by 50%',
-    trigger: () => {
-      return true;
+    trigger: state => {
+      return state.creativityFlag;
     },
     cost: state => {
       return state.ops >= 2500 && state.creativity >= 25;
