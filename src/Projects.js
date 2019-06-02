@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import useInterval from '@use-it/interval';
+import React, { useState, useEffect } from 'react';
 
-import allProjects from './allProjects';
+import all from './allProjects';
+const allProjects = all.map((proj, i) => ({ ...proj, index: i }));
+
 // import { numberWithCommas } from './misc';
 
 const Projects = props => {
@@ -12,18 +13,18 @@ const Projects = props => {
   delete state.activeProjects;
   delete state.setActiveProjects;
 
-  useInterval(() => {
+  useEffect(() => {
     const a = allProjects.filter(
       (proj, i) => !activeProjects.includes(i) && proj.trigger(state)
     );
     setAvailable(a);
-  }, 500);
+  }, [state, activeProjects]);
 
-  const showProjects = available.map((proj, i) => (
+  const showProjects = available.map(proj => (
     <button
-      key={`proj${i}`}
+      key={`proj${proj.index}`}
       onClick={() => {
-        setActiveProjects([...activeProjects, i]);
+        setActiveProjects([...activeProjects, proj.index]);
         proj.effect(state);
       }}
       disabled={!proj.cost(state)}
