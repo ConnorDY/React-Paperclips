@@ -89,8 +89,6 @@ const App = () => {
     });
 
     localStorage.setItem('gameState', state);
-
-    console.log('Saved');
   };
 
   const loadState = () => {
@@ -129,8 +127,6 @@ const App = () => {
     setCreativty(state.creativity);
 
     setActiveProjects(state.activeProjects || []);
-
-    console.log(state);
   };
 
   // make single clip

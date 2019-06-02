@@ -19,10 +19,6 @@ const Projects = props => {
     setAvailable(a);
   }, 500);
 
-  useEffect(() => {
-    console.log(state.clipperBoost);
-  }, [state.clipperBoost]);
-
   const showProjects = available.map((proj, i) => (
     <button
       key={`proj${i}`}
