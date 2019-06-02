@@ -33,7 +33,7 @@ const allProjects = [
     title: 'Improved Wire Extrusion',
     priceTag: '(1,750 ops)',
     desc: '50% more wire supply from every spool',
-    trigger: state => {
+    trigger: () => {
       return true;
     },
     cost: state => {
@@ -57,6 +57,21 @@ const allProjects = [
     effect: state => {
       state.setOps(state.ops - 5000);
       state.setClipperBoost(state.clipperBoost + 0.75);
+    }
+  },
+  {
+    title: 'Optimized Wire Extrusion',
+    priceTag: '(3,500 ops)',
+    desc: '75% more wire supply from every spool',
+    trigger: state => {
+      return state.wirePerSpool >= 1500;
+    },
+    cost: state => {
+      return state.ops >= 3500;
+    },
+    effect: state => {
+      state.setOps(state.ops - 3500);
+      state.setWirePerSpool(Math.floor(state.wirePerSpool * 1.75));
     }
   }
 ];
