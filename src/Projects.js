@@ -28,6 +28,7 @@ const Projects = props => {
           proj.effect(state);
         }}
         disabled={!proj.cost(state)}
+        className="project"
       >
         <b>
           {proj.title} {proj.priceTag}

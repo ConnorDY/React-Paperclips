@@ -24,3 +24,7 @@ table {
 td {
   vertical-align: top;
 }
+
+.project {
+  width: 100%;
+}
