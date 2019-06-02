@@ -339,7 +339,7 @@ const App = () => {
               wire={Math.floor(wire) - manualClips}
               wirePrice={wirePrice}
               cash={cash}
-              clipsPerSecond={clipsPerSecond}
+              clipsPerSecond={Math.round(clipsPerSecond)}
               buyWire={buyWire}
               clippers={clippers}
               buyClipper={buyClipper}
