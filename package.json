@@ -1,8 +1,8 @@
 {
-  "name": "incremental",
+  "name": "React-Paperclips",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://connordy.github.io/react-paperclips/",
+  "homepage": "https://connordy.github.io/React-Paperclips/",
   "dependencies": {
     "@use-it/interval": "^0.1.3",
     "react": "^16.8.6",
