@@ -46,6 +46,7 @@ const App = () => {
   const [fib1, setFib1] = useState(2);
   const [fib2, setFib2] = useState(3);
 
+  const [opFlag, setOpFlag] = useState(false);
   const [processors, setProcessors] = useState(1);
   const [memory, setMemory] = useState(1);
   const [ops, setOps] = useState(0);
@@ -80,6 +81,7 @@ const App = () => {
       fib1,
       fib2,
 
+      opFlag,
       processors,
       memory,
       ops,
@@ -121,6 +123,7 @@ const App = () => {
     setFib1(state.fib1);
     setFib2(state.fib2);
 
+    setOpFlag(state.opFlag || false);
     setProcessors(state.processors);
     setMemory(state.memory);
     setOps(state.ops);
@@ -262,8 +265,12 @@ const App = () => {
       setFib2(fibNext);
     }
 
+    // opFlag?
+    if (!opFlag) {
+      if (totalClips >= 2000) setOpFlag(true);
+    }
     // calculate operations
-    if (ops < memory * 1000) {
+    else if (ops < memory * 1000) {
       let opCycle = processors / speedFactor;
       const opBuf = memory * 1000 - ops;
 
@@ -304,7 +311,7 @@ const App = () => {
           </td>
           {/* Row 1, Col 2 */}
           <td>
-            {totalClips >= 2000 ? (
+            {opFlag ? (
               <Computation
                 trust={trust}
                 trustMilestone={trustMilestone}
@@ -344,7 +351,7 @@ const App = () => {
           </td>
           {/* Row 2, Col 2 */}
           <td>
-            {totalClips >= 2000 ? (
+            {opFlag ? (
               <Projects
                 activeProjects={activeProjects}
                 setActiveProjects={setActiveProjects}
