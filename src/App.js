@@ -52,6 +52,8 @@ const App = () => {
   const [processors, setProcessors] = useState(1);
   const [memory, setMemory] = useState(1);
   const [ops, setOps] = useState(0);
+
+  const [creativityFlag, setCreativityFlag] = useState(false);
   const [creativity, setCreativity] = useState(0);
 
   const [activeProjects, setActiveProjects] = useState([]);
@@ -88,6 +90,8 @@ const App = () => {
       processors,
       memory,
       ops,
+
+      creativityFlag,
       creativity,
 
       activeProjects
@@ -131,6 +135,8 @@ const App = () => {
     setProcessors(state.processors);
     setMemory(state.memory);
     setOps(state.ops);
+
+    setCreativityFlag(state.creativityFlag || false);
     setCreativity(state.creativity);
 
     setActiveProjects(state.activeProjects || []);
@@ -281,7 +287,10 @@ const App = () => {
       if (opCycle > opBuf) opCycle = opBuf;
 
       setOps(ops + opCycle);
-    } else setCreativity(creativity + processors / 20 / speedFactor);
+    }
+    // calculate creativity
+    else if (creativityFlag)
+      setCreativity(creativity + processors / 20 / speedFactor);
 
     // increase playTime
     setPlayTime(playTime + speedFactor);
@@ -325,6 +334,7 @@ const App = () => {
                 processors={processors}
                 memory={memory}
                 ops={Math.floor(ops)}
+                creativityFlag={creativityFlag}
                 creativity={Math.floor(creativity)}
                 increaseProcessors={increaseProcessors}
                 increaseMemory={increaseMemory}
@@ -364,18 +374,24 @@ const App = () => {
                 setActiveProjects={setActiveProjects}
                 ops={ops}
                 setOps={setOps}
+                creativityFlag={creativityFlag}
+                setCreativityFlag={setCreativityFlag}
                 creativity={creativity}
                 setCreativity={setCreativity}
                 cash={cash}
                 setCash={cash}
                 trust={trust}
-                setTrust={trust}
+                setTrust={setTrust}
                 clipperBoost={clipperBoost}
                 setClipperBoost={setClipperBoost}
                 wirePerSpool={wirePerSpool}
                 setWirePerSpool={setWirePerSpool}
                 demandFactor={demandFactor}
                 setDemandFactor={setDemandFactor}
+                memory={memory}
+                setMemory={setMemory}
+                processors={processors}
+                setProcessors={setProcessors}
               />
             ) : (
               ''

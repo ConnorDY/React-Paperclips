@@ -150,6 +150,36 @@ const allProjects = [
       state.setCreativity(state.creativity - 45);
       state.setDemandFactor(state.demandFactor * 2);
     }
+  },
+  {
+    title: 'Limerick',
+    priceTag: '(10 creat)',
+    desc: 'Algorithmically-generated poem (+1 Trust)',
+    trigger: () => {
+      return true;
+    },
+    cost: state => {
+      return state.creativity >= 10;
+    },
+    effect: state => {
+      state.setCreativity(state.creativity - 10);
+      state.setTrust(state.trust + 1);
+    }
+  },
+  {
+    title: 'Creativity',
+    priceTag: '(1,000 ops)',
+    desc: 'Use idle operations to generate new problems and new solutions',
+    trigger: state => {
+      return state.ops >= state.memory * 1000;
+    },
+    cost: state => {
+      return state.ops >= 1000;
+    },
+    effect: state => {
+      state.setOps(state.ops - 1000);
+      state.setCreativityFlag(true);
+    }
   }
 ];
 
