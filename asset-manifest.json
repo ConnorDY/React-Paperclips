@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/react-paperclips/static/css/main.42010ae9.chunk.css",
-    "main.js": "/react-paperclips/static/js/main.564e074a.chunk.js",
-    "main.js.map": "/react-paperclips/static/js/main.564e074a.chunk.js.map",
-    "runtime~main.js": "/react-paperclips/static/js/runtime~main.fe502d6b.js",
-    "runtime~main.js.map": "/react-paperclips/static/js/runtime~main.fe502d6b.js.map",
-    "static/js/2.dfc8ccab.chunk.js": "/react-paperclips/static/js/2.dfc8ccab.chunk.js",
-    "static/js/2.dfc8ccab.chunk.js.map": "/react-paperclips/static/js/2.dfc8ccab.chunk.js.map",
-    "index.html": "/react-paperclips/index.html",
-    "precache-manifest.edcb368b09b107aec00424ebc7f08e80.js": "/react-paperclips/precache-manifest.edcb368b09b107aec00424ebc7f08e80.js",
-    "service-worker.js": "/react-paperclips/service-worker.js",
-    "static/css/main.42010ae9.chunk.css.map": "/react-paperclips/static/css/main.42010ae9.chunk.css.map"
+    "main.css": "/React-Paperclips/static/css/main.42010ae9.chunk.css",
+    "main.js": "/React-Paperclips/static/js/main.fff49d6a.chunk.js",
+    "main.js.map": "/React-Paperclips/static/js/main.fff49d6a.chunk.js.map",
+    "runtime~main.js": "/React-Paperclips/static/js/runtime~main.de4647f5.js",
+    "runtime~main.js.map": "/React-Paperclips/static/js/runtime~main.de4647f5.js.map",
+    "static/js/2.dfc8ccab.chunk.js": "/React-Paperclips/static/js/2.dfc8ccab.chunk.js",
+    "static/js/2.dfc8ccab.chunk.js.map": "/React-Paperclips/static/js/2.dfc8ccab.chunk.js.map",
+    "index.html": "/React-Paperclips/index.html",
+    "precache-manifest.bc60d5131c6edf2b2f02d10f20b94481.js": "/React-Paperclips/precache-manifest.bc60d5131c6edf2b2f02d10f20b94481.js",
+    "service-worker.js": "/React-Paperclips/service-worker.js",
+    "static/css/main.42010ae9.chunk.css.map": "/React-Paperclips/static/css/main.42010ae9.chunk.css.map"
   }
 }
