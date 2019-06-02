@@ -88,6 +88,52 @@ const allProjects = [
       state.setOps(state.ops - 7500);
       state.setWirePerSpool(Math.floor(state.wirePerSpool * 2));
     }
+  },
+  {
+    title: 'Spectral Froth Annealment',
+    priceTag: '(12,000 ops)',
+    desc: '200% more wire supply from every spool',
+    trigger: state => {
+      return state.wirePerSpool >= 5000;
+    },
+    cost: state => {
+      return state.ops >= 12000;
+    },
+    effect: state => {
+      state.setOps(state.ops - 12000);
+      state.setWirePerSpool(Math.floor(state.wirePerSpool * 3));
+    }
+  },
+  {
+    title: 'Quantum Foam Annealment',
+    priceTag: '(15,000 ops)',
+    desc: '1,000% more wire supply from every spool',
+    trigger: state => {
+      return state.wirePerSpool >= 15000;
+    },
+    cost: state => {
+      return state.ops >= 15000;
+    },
+    effect: state => {
+      state.setOps(state.ops - 15000);
+      state.setWirePerSpool(Math.floor(state.wirePerSpool * 11));
+    }
+  },
+  {
+    title: 'New Slogan',
+    priceTag: '(25 creat, 2,500 ops)',
+    desc: 'Improve marketing effectiveness by 50%',
+    trigger: () => {
+      return true;
+    },
+    cost: state => {
+      return state.ops >= 2500 && state.creativity >= 25;
+    },
+    effect: state => {
+      state.setOps(state.ops - 2500);
+      state.setCreativity(state.creativity - 25);
+      state.setDemandFactor(state.demandFactor * 1.5);
+    }
   }
 ];
 

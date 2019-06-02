@@ -52,7 +52,7 @@ const App = () => {
   const [processors, setProcessors] = useState(1);
   const [memory, setMemory] = useState(1);
   const [ops, setOps] = useState(0);
-  const [creativity, setCreativty] = useState(0);
+  const [creativity, setCreativity] = useState(0);
 
   const [activeProjects, setActiveProjects] = useState([]);
 
@@ -131,7 +131,7 @@ const App = () => {
     setProcessors(state.processors);
     setMemory(state.memory);
     setOps(state.ops);
-    setCreativty(state.creativity);
+    setCreativity(state.creativity);
 
     setActiveProjects(state.activeProjects || []);
   };
@@ -281,7 +281,7 @@ const App = () => {
       if (opCycle > opBuf) opCycle = opBuf;
 
       setOps(ops + opCycle);
-    } else setCreativty(creativity + processors / 20 / speedFactor);
+    } else setCreativity(creativity + processors / 20 / speedFactor);
 
     // increase playTime
     setPlayTime(playTime + speedFactor);
@@ -365,7 +365,7 @@ const App = () => {
                 ops={ops}
                 setOps={setOps}
                 creativity={creativity}
-                setCreativty={setCreativty}
+                setCreativity={setCreativity}
                 cash={cash}
                 setCash={cash}
                 trust={trust}
@@ -374,6 +374,8 @@ const App = () => {
                 setClipperBoost={setClipperBoost}
                 wirePerSpool={wirePerSpool}
                 setWirePerSpool={setWirePerSpool}
+                demandFactor={demandFactor}
+                setDemandFactor={setDemandFactor}
               />
             ) : (
               ''

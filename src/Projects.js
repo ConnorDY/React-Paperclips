@@ -21,20 +21,22 @@ const Projects = props => {
   }, [state, activeProjects]);
 
   const showProjects = available.map(proj => (
-    <button
-      key={`proj${proj.index}`}
-      onClick={() => {
-        setActiveProjects([...activeProjects, proj.index]);
-        proj.effect(state);
-      }}
-      disabled={!proj.cost(state)}
-    >
-      <b>
-        {proj.title} {proj.priceTag}
-      </b>
+    <React.Fragment key={`proj${proj.index}`}>
+      <button
+        onClick={() => {
+          setActiveProjects([...activeProjects, proj.index]);
+          proj.effect(state);
+        }}
+        disabled={!proj.cost(state)}
+      >
+        <b>
+          {proj.title} {proj.priceTag}
+        </b>
+        <br />
+        {proj.desc}
+      </button>
       <br />
-      {proj.desc}
-    </button>
+    </React.Fragment>
   ));
 
   return (
