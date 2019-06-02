@@ -39,6 +39,7 @@ const App = () => {
 
   const [clippers, setClippers] = useState(0);
   const [clipperPrice, setClipperPrice] = useState(5);
+  const [clipperBoost, setClipperBoost] = useState(1);
 
   const [trust, setTrust] = useState(2);
   const [trustMilestone, setTrustMilestone] = useState(3000);
@@ -49,6 +50,8 @@ const App = () => {
   const [memory, setMemory] = useState(1);
   const [ops, setOps] = useState(0);
   const [creativity, setCreativty] = useState(0);
+
+  const [activeProjects, setActiveProjects] = useState([]);
 
   // save/load state
   const saveState = () => {
@@ -70,6 +73,7 @@ const App = () => {
 
       clippers,
       clipperPrice,
+      clipperBoost,
 
       trust,
       trustMilestone,
@@ -79,7 +83,9 @@ const App = () => {
       processors,
       memory,
       ops,
-      creativity
+      creativity,
+
+      activeProjects
     });
 
     localStorage.setItem('gameState', state);
@@ -110,6 +116,7 @@ const App = () => {
 
     setClippers(state.clippers);
     setClipperPrice(state.clipperPrice);
+    setClipperBoost(state.clipperBoost || 1);
 
     setTrust(state.trust);
     setTrustMilestone(state.trustMilestone);
@@ -120,6 +127,10 @@ const App = () => {
     setMemory(state.memory);
     setOps(state.ops);
     setCreativty(state.creativity);
+
+    setActiveProjects(state.activeProjects || []);
+
+    console.log(state);
   };
 
   // make single clip
@@ -199,7 +210,10 @@ const App = () => {
     // create clips with auto-clippers
     let autoClips = 0;
     if (clippers > 0) {
-      autoClips = makeClips(roundTo(clippers * speedFactor, 3), _clips);
+      autoClips = makeClips(
+        roundTo(clippers * clipperBoost * speedFactor, 3),
+        _clips
+      );
     }
 
     // update wire amount
@@ -219,13 +233,13 @@ const App = () => {
     setTotalClips(totalClips + autoClips + manualClips);
 
     // average clips per second
-    const mc = [...clipsList];
+    const c = [...clipsList];
 
-    if (mc.unshift(manualClips) > 5) mc.pop();
-    setClipsList(mc);
+    if (c.unshift(manualClips + autoClips) > 5) c.pop();
+    setClipsList(c);
 
-    const mcTotal = mc.reduce((tot, v) => tot + v, 0);
-    setClipsPerSecond(clippers + mcTotal / speedFactor / mc.length);
+    const cTotal = c.reduce((tot, v) => tot + v, 0);
+    setClipsPerSecond(cTotal / speedFactor / c.length);
     setManualClips(0);
 
     // average cash per second
@@ -334,7 +348,24 @@ const App = () => {
           </td>
           {/* Row 2, Col 2 */}
           <td>
-            <Projects ops={ops} creativity={creativity} cash={cash} />
+            {totalClips >= 2000 ? (
+              <Projects
+                activeProjects={activeProjects}
+                setActiveProjects={setActiveProjects}
+                ops={ops}
+                setOps={setOps}
+                creativity={creativity}
+                setCreativty={setCreativty}
+                cash={cash}
+                setCash={cash}
+                trust={trust}
+                setTrust={trust}
+                clipperBoost={clipperBoost}
+                setClipperBoost={setClipperBoost}
+              />
+            ) : (
+              ''
+            )}
           </td>
         </tr>
       </tbody>
