@@ -25,7 +25,7 @@ const allProjects = [
       return state.ops >= 2500;
     },
     effect: state => {
-      state.setOps(state.op - 2500);
+      state.setOps(state.ops - 2500);
       state.setClipperBoost(state.clipperBoost + 0.5);
     }
   }
