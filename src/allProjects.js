@@ -155,8 +155,8 @@ const allProjects = [
     title: 'Limerick',
     priceTag: '(10 creat)',
     desc: 'Algorithmically-generated poem (+1 Trust)',
-    trigger: () => {
-      return true;
+    trigger: state => {
+      return state.creativity >= 10;
     },
     cost: state => {
       return state.creativity >= 10;
@@ -179,6 +179,82 @@ const allProjects = [
     effect: state => {
       state.setOps(state.ops - 1000);
       state.setCreativityFlag(true);
+    }
+  },
+  {
+    title: 'Lexical Processing',
+    priceTag: '(50 creat)',
+    desc: 'Gain ability to interpret and understand human language (+1 Trust)',
+    trigger: state => {
+      return state.creativity >= 50;
+    },
+    cost: state => {
+      return state.creativity >= 50;
+    },
+    effect: state => {
+      state.setCreativity(state.creativity - 50);
+      state.setTrust(state.trust + 1);
+    }
+  },
+  {
+    title: 'Combinatory Harmonics',
+    priceTag: '(100 creat)',
+    desc: 'Daisy, Daisy, give me your answer do... (+1 Trust)',
+    trigger: state => {
+      return state.creativity >= 100;
+    },
+    cost: state => {
+      return state.creativity >= 100;
+    },
+    effect: state => {
+      state.setCreativity(state.creativity - 100);
+      state.setTrust(state.trust + 1);
+    }
+  },
+  {
+    title: 'The Hadwiger Problem',
+    priceTag: '(150 creat)',
+    desc: 'Cubes within cubes within cubes... (+1 Trust)',
+    trigger: state => {
+      return state.creativity >= 150;
+    },
+    cost: state => {
+      return state.creativity >= 150;
+    },
+    effect: state => {
+      state.setCreativity(state.creativity - 150);
+      state.setTrust(state.trust + 1);
+      state.setHadwigerFlag(true);
+    }
+  },
+  {
+    title: 'The T\xF3th Sausage Conjecture',
+    priceTag: '(200 creat)',
+    desc: 'Tubes within tubes within tubes... (+1 Trust)',
+    trigger: state => {
+      return state.creativity >= 200;
+    },
+    cost: state => {
+      return state.creativity >= 200;
+    },
+    effect: state => {
+      state.setCreativity(state.creativity - 200);
+      state.setTrust(state.trust + 1);
+    }
+  },
+  {
+    title: 'Hadwiger Clip Diagrams',
+    priceTag: '(6,000 ops)',
+    desc: 'Increases AutoClipper performance by an additional 500%',
+    trigger: state => {
+      return state.hadwigerFlag;
+    },
+    cost: state => {
+      return state.ops >= 6000;
+    },
+    effect: state => {
+      state.setOps(state.ops - 6000);
+      state.setClipperBoost(state.clipperBoost + 5);
     }
   }
 ];

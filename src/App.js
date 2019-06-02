@@ -58,6 +58,8 @@ const App = () => {
 
   const [activeProjects, setActiveProjects] = useState([]);
 
+  const [hadwigerFlag, setHadwigerFlag] = useState(false);
+
   // save/load state
   const saveState = () => {
     const state = JSON.stringify({
@@ -94,7 +96,9 @@ const App = () => {
       creativityFlag,
       creativity,
 
-      activeProjects
+      activeProjects,
+
+      hadwigerFlag
     });
 
     localStorage.setItem('gameState', state);
@@ -106,7 +110,7 @@ const App = () => {
 
     const state = JSON.parse(lcs);
 
-    setPlayTime(state.playTime || 0);
+    setPlayTime(state.playTime);
     setCash(state.cash);
 
     setClips(state.clips);
@@ -124,22 +128,24 @@ const App = () => {
 
     setClippers(state.clippers);
     setClipperPrice(state.clipperPrice);
-    setClipperBoost(state.clipperBoost || 1);
+    setClipperBoost(state.clipperBoost);
 
     setTrust(state.trust);
     setTrustMilestone(state.trustMilestone);
     setFib1(state.fib1);
     setFib2(state.fib2);
 
-    setOpFlag(state.opFlag || false);
+    setOpFlag(state.opFlag);
     setProcessors(state.processors);
     setMemory(state.memory);
     setOps(state.ops);
 
-    setCreativityFlag(state.creativityFlag || false);
+    setCreativityFlag(state.creativityFlag);
     setCreativity(state.creativity);
 
-    setActiveProjects(state.activeProjects || []);
+    setActiveProjects(state.activeProjects);
+
+    setHadwigerFlag(state.hadwigerFlag);
   };
 
   // make single clip
@@ -392,6 +398,8 @@ const App = () => {
                 setMemory={setMemory}
                 processors={processors}
                 setProcessors={setProcessors}
+                hadwigerFlag={hadwigerFlag}
+                setHadwigerFlag={setHadwigerFlag}
               />
             ) : (
               ''
